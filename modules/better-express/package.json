@@ -1,0 +1,8 @@
+{
+  "name": "better-express",
+  "version": "1.0.0",
+  "description": "Cria funções no express, como req.std e req.*ifCan",
+  "main": "better-express.js",
+  "author": "Pliffer",
+  "license": "ISC"
+}

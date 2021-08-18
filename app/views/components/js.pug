@@ -1,0 +1,31 @@
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+if global.config.state === 'development'
+    
+    -
+
+        var fs = require('fs');
+
+        function readFiles(src){
+            var files = fs.readdirSync(global.dir.app + src);
+
+            var aux = [];
+
+            files.forEach(function(file){
+                if(file.substr(-3)=='.js' || file.substr(-4)=='.css') aux.push(file);
+            });
+
+            return aux;
+        }
+
+
+    for file in readFiles('/assets/vendor/js')
+        script(src="vendor/js/" + file)
+
+    for file in readFiles('/assets/js')
+        script(src="js/" + file)
+
+else
+    script(src="/js/build/main.min.js")
+
+<script>if (window.module) module = window.module;</script>

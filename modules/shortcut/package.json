@@ -1,0 +1,12 @@
+{
+  "name": "shortcut",
+  "version": "1.0.0",
+  "description": "shortcut",
+  "main": "shortcut.js",
+  "keywords": [],
+  "author": "Pliffer",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^9.1.0"
+  }
+}

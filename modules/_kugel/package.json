@@ -1,0 +1,12 @@
+{
+  "name": "_kugel",
+  "version": "1.0.0",
+  "description": "_kugel",
+  "main": "_kugel.js",
+  "keywords": [],
+  "author": "Pliffer",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^9.1.0"
+  }
+}

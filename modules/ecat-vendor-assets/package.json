@@ -1,0 +1,9 @@
+{
+    "name": "ecat-vendor-assets",
+    "version": "1.0.0",
+    "description": "Guarda todos os arquivos de vendor dos projetos novos",
+    "main": "ecat-vendor-assets.js",
+    "author": "Pliffer",
+    "license": "ISC",
+    "dependencies": {}
+}

@@ -1,0 +1,21 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+ol{
+    padding-left: 40px;
+}
+
+*:focus{
+    outline: 0;
+}
+
+*, *:after, *:before{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+body{
+    font-family: calibri;
+}

@@ -1,0 +1,9 @@
+{
+    "name": "jquery",
+    "version": "1.0.0",
+    "description": "Conjunto de assets pertencentes ao jquery",
+    "main": "jquery.js",
+    "author": "Pliffer",
+    "license": "ISC",
+    "dependencies": {}
+}

@@ -1,0 +1,16 @@
+node_modules
+app/storage/*
+sftp-config.json
+*.pem
+.pem
+.logs
+.project
+app/data
+.sql
+# .env
+# modules/*
+doc/tests/userdata
+app/assets/*
+app/views/modules/*
+app/views/public/*
+app/views/page/*

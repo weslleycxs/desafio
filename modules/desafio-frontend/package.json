@@ -1,0 +1,9 @@
+{
+    "name": "desafio-frontend",
+    "version": "1.0.0",
+    "description": "Front end de desafio",
+    "main": "desafio-frontend.js",
+    "author": "Pliffer",
+    "license": "ISC",
+    "dependencies": {}
+}
