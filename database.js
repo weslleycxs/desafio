@@ -1,8 +1,13 @@
 const path = require('path');
 const fs   = require('fs-extra');
+const xlsx = require('xlsx');
 const cp   = require('child_process');
 
-const Logs = require('./logs');
+if(global.modules){
+
+    const Logs = require('./logs');
+
+}
 
 var Database = {
 
@@ -1158,37 +1163,294 @@ var Database = {
 
         return client;
 
-    }
+    },
+
+
+    forEachPromise: function(arr, callback){
+
+        return new Promise(function(resolve, reject){
+
+            var index = 0;
+
+            var tick = function(){
+
+                if(typeof arr[index] === 'undefined'){
+
+                    return resolve();
+
+                }
+
+                var callRet = callback(arr[index], index);
+
+                // Se não tiver then
+                if(!callRet || !callRet.then){
+
+                    index++;
+                    tick();
+
+                    return;
+
+                }
+
+                callRet.then(function(){
+
+                    index++;
+
+                    tick();
+
+                });
+
+            }
+
+            tick();
+
+        });
+
+    },
+
+    getListCached(folder){
+
+        let ret = [];
+
+        return module.exports.listCached(folder).then(items => {
+            
+            let retPromise = [];
+
+            items.forEach(item => {
+
+                retPromise.push(module.exports.getCache(folder, item).then(contentItem => {
+
+                    ret.push(contentItem);
+
+                }));
+
+            });
+
+            return Promise.all(retPromise);
+
+        }).then(() => {
+
+            return ret;
+
+        });
+
+    },
+
+    listCached(folder){
+
+        let filepath = path.join(__dirname, 'cache', folder);
+
+        return fs.readdir(filepath).then(entries => {
+
+            entries.sort();
+
+            return entries;
+
+        });
+
+    },
+
+    setCache(folder, filename, object){
+
+        let cacheDir = path.join(__dirname, 'cache', folder);
+
+        return fs.ensureDir(cacheDir).then(() => {
+
+            let filepath = path.join(cacheDir, filename + '.json');
+
+            return fs.writeJson(filepath, object);
+
+        });
+
+    },
+
+    // @deprecated due setCache
+    addCache(folder, filename, object){
+
+        return module.exports.setCache(folder, filename, object);
+
+    },
+
+    getCache(folder, file){
+
+        if(!file) return console.error('File argument necessary');
+
+        let sufix = '.json';
+
+        if(file.substr(-5) == '.json') sufix = '';
+
+        let filepath = path.join(__dirname, 'cache', folder, file + sufix);
+
+        return fs.exists(filepath).then(exists => {
+
+            if(!exists) return Promise.reject(file + ' not cached at ' + folder);
+
+            return fs.readJson(filepath);
+
+        });
+
+    },
+
+    table: function(arr){
+       
+        let maxLength = 0;
+        
+        arr.forEach(item => {
+            
+            if(item.length > maxLength) maxLength = item.length;
+            
+        });
+        
+        arr.forEach(item => {
+            
+            if(item.length < maxLength){
+                
+                for(let i = item.length; i < maxLength; i++) item.push('');
+                
+            }
+            
+        });
+        
+        return table.table(arr, {
+            border: table.getBorderCharacters('norc')
+        });
+        
+    },
+
+    arrayToXlsx: function(filename, array){
+
+        // @todo Usar o reject, pois aqui não sabemos quando ocorrer um erro
+
+        console.log('Criando arquivo a partir de', array.length, 'linhas')
+
+        return new Promise((resolve, reject) => {
+    
+            let wb = xlsx.utils.book_new();
+            let ws = xlsx.utils.aoa_to_sheet(array);
+
+            xlsx.utils.book_append_sheet(wb, ws, "Estoque");
+
+            xlsx.writeFileAsync(filename, wb, () => {
+
+                console.log('Arquivo', filename, 'gerado');
+
+                resolve(filename);
+
+            });
+
+        });
+
+    },
+
+    getBuffer: function(filename){
+
+        return new Promise((resolve, reject) => {
+
+            fs.readFile(filename, (err, buffer) => {
+
+                if(err) reject(err);
+                else resolve(buffer);
+
+            });
+
+        });
+
+    },
+
+    filterArrayByColumns: function(arr, columns){
+
+        var aux = [];
+
+        arr.forEach(function(item){
+
+            var auxItem = []
+
+            item.forEach(function(col, k){
+
+                if(columns.includes(k)) auxItem.push(col)
+
+            });
+
+            aux.push(auxItem)
+
+        });
+
+        return aux;
+
+    },
+
+    excelToJson: function(filename){
+
+        let wb = xlsx.readFile(filename);
+
+        return module.exports.wbToJson(wb);
+
+    },
+
+    excelToArray: function(filename){
+
+        let wb = xlsx.readFile(filename);
+
+        return module.exports.wbToArray(wb);
+
+    },
+
+    wbToJson: function(wb){
+
+        let sheet = wb.Sheets[wb.SheetNames[0]];
+
+        return xlsx.utils.sheet_to_json(sheet);
+
+    },
+
+    wbToArray: function(wb){
+
+        let sheet = wb.Sheets[wb.SheetNames[0]];
+
+        return xlsx.utils.sheet_to_json(sheet, {
+            header: 1
+        });
+
+    },
+
 
 }
 
-// Baseado no .env, escolhe a engine
-module.exports = Database.getMysql();
+if(global.app){
 
-global.app.onload(async () => {
+    // Baseado no .env, escolhe a engine
+    module.exports = Database.getMysql();
 
-    global.modules.cl.add('backup structure', () => {
+    global.app.onload(async () => {
 
-        Database.backupStructure();
+        global.modules.cl.add('backup structure', () => {
+
+            Database.backupStructure();
+
+        });
+
+        global.modules.cl.add('bs', () => {
+
+            Database.backupStructure();
+
+        });
+
+        global.modules.cl.add('compare database structure', () => {
+
+            Database.compareStructure();
+
+        });
+
+        global.modules.cl.add('cds', () => {
+
+            Database.compareStructure();
+
+        });
 
     });
 
-    global.modules.cl.add('bs', () => {
+} else{
 
-        Database.backupStructure();
+    module.exports = Database;
 
-    });
-
-    global.modules.cl.add('compare database structure', () => {
-
-        Database.compareStructure();
-
-    });
-
-    global.modules.cl.add('cds', () => {
-
-        Database.compareStructure();
-
-    });
-
-});
+}

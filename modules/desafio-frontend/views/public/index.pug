@@ -1,5 +1,49 @@
 extends ../components/layout
 
+block additional-css
+    link(rel="preconnect", href="https://fonts.googleapis.com") 
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin) 
+    link(href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400&display=swap", rel="stylesheet")
+
 block body
 
-    p Desafio
+    nav
+
+        img.insights-logo(src="img/brand-insights@3x.svg")
+
+        .add-close
+            img(src="img/close_black_24dp.svg")
+
+        .profile-info
+            .outer-border
+                .img(style="background-image: url(public/1/profile.jpg)")
+            .hello
+                span Olá 
+                span.name Weslley
+                span !
+            .mail weslley@pliffer.com.br
+
+        hr
+
+        p.feed-title
+            span Feed de 
+            b Insights
+
+    .insight-list
+
+    .reload
+        .dots
+            .bal
+            .bal
+            .bal
+        p Toque para exibir mais insights
+
+    .search
+        input(type="search", placeholder="Pesquise por termos ou categorias...")
+        img(src="img/search_black_24dp.svg")
+
+.components
+
+    .insight
+        .text
+        .type-holder

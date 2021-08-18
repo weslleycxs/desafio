@@ -2,7 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "desafio",
+			"path": "/home/pliffer/Desktop/Organizr/Pliffer/tests/globo/desafio",
             "folder_exclude_patterns": [
                 "node_modules"
             ]
