@@ -1,3 +1,4 @@
+// Usado para se houver autenticação
 var Api = {
 
     host: '/',

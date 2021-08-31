@@ -1,5 +1,12 @@
 extends ../components/layout
 
+block title
+    title Insights
+
+    meta(name="theme-color", content="#451e4a")
+    meta(name="msapplication-navbutton-color", content="#451e4a")
+    meta(name="apple-mobile-web-app-status-bar-style", content="#451e4a")
+
 block additional-css
     link(rel="preconnect", href="https://fonts.googleapis.com") 
     link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin) 
@@ -31,19 +38,28 @@ block body
 
     .insight-list
 
-    .reload
-        .dots
-            .bal
-            .bal
-            .bal
-        p Toque para exibir mais insights
+    .footer.opacity-animation
 
-    .search
-        input(type="search", placeholder="Pesquise por termos ou categorias...")
-        img(src="img/search_black_24dp.svg")
+        br
+
+        .show-more
+            .dots
+                .bal
+                .bal
+                .bal
+            p Toque para exibir mais insights
+
+        br
+
+        .search
+            label
+                input(type="search", placeholder="Pesquise por termos ou categorias...")
+                img(src="img/search_black_24dp.svg")
+
+        br
 
     .components
 
-        .insight
-            .text
-            .type-holder
+        .insight.opacity-animation
+            span.text(data-value="text")
+            .tag-holder

@@ -31,4 +31,10 @@ $(function(){
 
     Default.load();
 
+    $('.reload').on('click', function(){
+
+        Insight.showMore();
+
+    });
+
 });

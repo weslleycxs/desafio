@@ -2,7 +2,7 @@ $main-color: #ec4f77;
 
 body{
     font-family: "Exo 2", sans-serif;
-    background: silver;
+    background: #efefef;
     opacity: 0;
 }
 
@@ -17,7 +17,7 @@ body.loaded{
 nav{
 
     &{
-        background: url(/img/background.svg) no-repeat center   ;
+        background: url(/img/background.svg) no-repeat center top;
         background-size: 100%;
         padding: 20px 30px;
         padding-bottom: 100px;
@@ -47,9 +47,10 @@ nav{
     }
 
     .feed-title{
-        margin-top: 10px;
         text-align: center;
         color: $main-color;
+        width: 130px;
+        margin: 10px auto 0;
     }
 
     .profile-info{
@@ -114,13 +115,112 @@ nav{
 
 }
 
-.reload, .search{
+.show-more, .search{
     text-align: center;
+}
+
+.opacity-animation{
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.footer{
 }
 
 .insight{
     background: white;
-    margin: 10px;
+    margin: 2%;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px 10px;
+    display: inline-block;
+    width: 96%;
+    box-shadow: 5px 5px 13px -5px #25252540;
+    font-size: .9em;
+}
+
+.insight-list{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.insight-list{
+    columns: 3;
+}
+
+.bal{
+    width: 5px;
+    height: 5px;
+    background: #bbbbbb;
+    display: inline-block;
+    border-radius: 100px;
+}
+
+.search{
+    background: white;
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 5px 5px 13px -5px #25252540;
+    font-style: italic;
+    position: relative;
+}
+
+.show-more{
+    cursor: default;
+}
+
+.show-more p{
+    color: #7b7b7b;
+    margin-top: 5px;
+}
+
+.search input{
+    background: transparent;
+    border: 0;
+    vertical-align: middle;
+    width: 100%;
+    padding: 15px 10px;
+}
+
+.search img{
+    vertical-align: middle;
+    opacity: 0.3;
+    position: absolute;
+    right: 6px;
+    top: 10px;
+}
+
+@media screen and (max-width: 900px){
+
+    .insight-list{
+        columns: 2;
+    }
+
+}
+@media screen and (max-width: 500px){
+
+    .insight-list{
+        columns: 1;
+        width: 95%;
+    }
+
+}
+
+.tag-holder {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.tag{
+    font-variant: all-small-caps;
+    border: 1px solid pink;
+    margin: 5px;
+    border-radius: 3px;
+    padding: 0px 5px 4px;
+    vertical-align: middle;
+    color: #d84870;
+    font-weight: bold;
+    font-size: 0.8em;
+    cursor: pointer;
 }

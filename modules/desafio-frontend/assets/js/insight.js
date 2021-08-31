@@ -1,10 +1,10 @@
-var Insight = {
+let Insight = {
 
-    create: function(){
+    create(){
 
         Api.post('insight', {
             // 
-        }).then(function(res){
+        }).then(res => {
 
             console.log(res);
 
@@ -12,69 +12,70 @@ var Insight = {
 
     },
 
-    load: function(){
+    load(){
 
-        Api.get('insight', {}).then(insights => {
+        Api.get('insight', {
 
-            // var insightElm = Gui.component('.insight', insights);
+            // Necessário para saber por qual insight começar
+            startAt: $('.insight-list .insight').length
 
-            insights.forEach(function(insight){
+        }).then(insights => {
 
-                var insightElm = $('<div class="insight"><span class="text">' + insight.text + '</span></div>')
+            insights.forEach((insight, k) => {
 
-                insightElm.on('click', function(){
+                let insightElm = Gui.component('.insight', insight);
 
-                    Alerts.notify('Edição ainda não disponível');
+                insight.tag.forEach(tag => {
+
+                    if(!tag) return;
+
+                    let tagElm = $('<span class="tag">' + tag + '</span>');
+
+                    // Quando alguém clica na tag, automaticamente vai para a busca
+                    tagElm.on('click', (event) => {
+
+                        event.originalEvent.stopPropagation();
+
+                        $('.search input').val(tag);
+                        $('.search input').trigger('input');
+
+                    });
+
+                    insightElm.find('.tag-holder').append(tagElm);
 
                 });
 
+                insightElm.css('opacity', 0);
+
+                insightElm.on('click', () => Alerts.notify('Edição ainda não disponível'));
+
                 $('.insight-list').append(insightElm);
 
+                // Cria uma animação para a exibição dos itens
+                setTimeout(() => {
+
+                    insightElm.css('opacity', 1);
+
+                    // Se tivermos chegado ao final
+                    if(k == insights.length -1){
+
+                        setTimeout(() => {
+
+                            $('.footer').css('opacity', 1);
+
+                        }, 200);
+
+                    }
+
+                }, 200 * k);
 
             });
 
         });
 
-    }
+    },
 
-}
-
-var Gui = {
-
-    component: function(qs, obj){
-
-        var elm = $('.components').find(qs).clone();
-
-        elm.find('[data-value]').each(function(){
-
-            var propName = $(this).attr('data-value');
-
-            var val = obj[propName];
-
-            if($(this).attr('data-mask')){
-
-                switch(propName){
-
-                    case 'cnpj':
-
-                        val = Helpers.toCnpj(val);
-
-                    break;
-
-                }
-
-                console.log(val);
-
-            }
-
-            // @todo Verificar o tipo do elemento, se for do tipo input, devemos adicionar
-            // o valor por val ao invés de html
-
-            if(val) $(this).html(val);
-
-        });
-
-        return elm;
+    showMore(){
 
     }
 
